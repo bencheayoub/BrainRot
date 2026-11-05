@@ -586,16 +586,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FruitSpawner
   entries:
   - prefab: {fileID: 2744899193145814718, guid: 7468127f1cc913b8daf58823a91ffc9b, type: 3}
-    weight: 55
+    weightEasy: 50
+    weightHard: 20
   - prefab: {fileID: 3132823710310250859, guid: fd9faf43fab99153c9e2e3aca1a10c01, type: 3}
-    weight: 25
+    weightEasy: 15
+    weightHard: 35
   - prefab: {fileID: 8642420737131386249, guid: ba80fe1f02b919147aef63c2c42ed811, type: 3}
-    weight: 5
+    weightEasy: 5
+    weightHard: 5
   - prefab: {fileID: 1272087055745080575, guid: e48c69e15d6859d22a9a049dc54f4d8b, type: 3}
-    weight: 15
-  spawnInterval: 1.2
+    weightEasy: 5
+    weightHard: 30
+  easyInterval: 1.3
+  hardInterval: 0.5
   minFallSpeed: 2.5
   maxFallSpeed: 4.5
+  hardSpeedMultiplier: 1.8
+  hardDoubleSpawnChance: 0.35
   edgePadding: 0.5
   spawnHeightAboveScreen: 1
 --- !u!1 &832575517
@@ -639,6 +646,79 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832575517}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1588942076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1588942078}
+  - component: {fileID: 1588942077}
+  m_Layer: 0
+  m_Name: DifficultySystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1588942077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588942076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c62dd4873f45f4a924d4580addf4c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DifficultySystem
+  spawner: {fileID: 808691527}
+  background: {fileID: 1690850401}
+  secondsToMaxDifficulty: 90
+  difficultyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  easyScrollSpeed: 0.3
+  hardScrollSpeed: 0.8
+--- !u!4 &1588942078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588942076}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -762,3 +842,4 @@ SceneRoots:
   - {fileID: 547526595}
   - {fileID: 1690850404}
   - {fileID: 808691526}
+  - {fileID: 1588942078}
