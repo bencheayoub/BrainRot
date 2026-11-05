@@ -23,6 +23,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        // Player can't move after game over
+        if (GameManager.Instance != null && GameManager.Instance.IsGameOver) return;
+
         float input = ReadHorizontal();
 
         Vector3 pos = transform.position;
@@ -34,6 +37,20 @@ public class PlayerController : MonoBehaviour
         pos.x = Mathf.Clamp(pos.x, -limit, limit);
 
         transform.position = pos;
+    }
+
+    // Runs when the player touches a fruit or obstacle (both have trigger colliders)
+    private void OnTriggerEnter(Collider other)
+    {
+        Fruit fruit = other.GetComponent<Fruit>();
+        if (fruit == null) return;
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.CatchFruit(fruit);
+        }
+
+        Destroy(fruit.gameObject);
     }
 
     // Returns -1 (left), 0 (none) or +1 (right)
