@@ -20,33 +20,61 @@ public class Fruit : MonoBehaviour
     [Header("Motion")]
     [SerializeField] private float rotationSpeed = 90f;
 
-    // The spawner sets this when it creates the fruit (step 7)
-    public float fallSpeed = 3f;
+    [Header("Sway (side to side)")]
+    [Tooltip("How far it drifts left and right, in units")]
+    [SerializeField] private float swayAmount = 0.5f;
+    [Tooltip("How fast it sways")]
+    [SerializeField] private float swaySpeed = 1.5f;
+    [Tooltip("Obstacles sway this much less, so they stay fair to dodge")]
+    [SerializeField] private float obstacleSwayFactor = 0.4f;
+
+    // The spawner sets this when it creates the object
+    public float riseSpeed = 3f;
 
     private Vector3 spinAxis;
     private float spinSpeed;
     private Camera cam;
 
+    private float startX;
+    private float phase;
+    private float freq;
+    private float amplitude;
+    private float xLimit;
+
     private void Start()
     {
         cam = Camera.main;
 
-        // Each fruit spins around its own random axis, at a slightly random speed
+        // Each object spins around its own random axis, at a slightly random speed
         spinAxis = Random.onUnitSphere;
         spinSpeed = rotationSpeed * Random.Range(0.6f, 1.4f);
+
+        // Each object gets its own sway
+        startX = transform.position.x;
+        phase = Random.Range(0f, Mathf.PI * 2f);
+        freq = swaySpeed * Random.Range(0.7f, 1.3f);
+        amplitude = swayAmount * Random.Range(0.5f, 1.2f);
+        if (type == FruitType.Obstacle) amplitude *= obstacleSwayFactor;
+
+        xLimit = cam.orthographicSize * cam.aspect - 0.4f;
     }
 
     private void Update()
     {
-        // Fall straight down
-        transform.position += Vector3.down * fallSpeed * Time.deltaTime;
+        Vector3 pos = transform.position;
 
-        // Rotate while falling
+        pos.y += riseSpeed * Time.deltaTime;
+
+        float x = startX + Mathf.Sin(Time.time * freq + phase) * amplitude;
+        pos.x = Mathf.Clamp(x, -xLimit, xLimit);
+
+        transform.position = pos;
+
         transform.Rotate(spinAxis, spinSpeed * Time.deltaTime, Space.World);
 
-        // Remove once it is below the screen
-        float bottomLimit = -(cam.orthographicSize + 1f);
-        if (transform.position.y < bottomLimit)
+        // Remove once it is above the top of the screen
+        float topLimit = cam.orthographicSize + 1f;
+        if (pos.y > topLimit)
         {
             Destroy(gameObject);
         }

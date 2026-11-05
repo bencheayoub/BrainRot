@@ -21,19 +21,19 @@ public class FruitSpawner : MonoBehaviour
     [SerializeField] private float easyInterval = 1.3f;
     [SerializeField] private float hardInterval = 0.5f;
 
-    [Header("Fall speed")]
-    [SerializeField] private float minFallSpeed = 2.5f;
-    [SerializeField] private float maxFallSpeed = 4.5f;
-    [Tooltip("Fall speed is multiplied by this at max difficulty")]
+    [Header("Rise speed")]
+    [SerializeField] private float minRiseSpeed = 2.5f;
+    [SerializeField] private float maxRiseSpeed = 4.5f;
+    [Tooltip("Rise speed is multiplied by this at max difficulty")]
     [SerializeField] private float hardSpeedMultiplier = 1.8f;
 
     [Header("Patterns")]
-    [Tooltip("Chance of spawning two fruits at once, at max difficulty")]
+    [Tooltip("Chance of spawning two objects at once, at max difficulty")]
     [Range(0f, 1f)] [SerializeField] private float hardDoubleSpawnChance = 0.35f;
 
     [Header("Position")]
     [SerializeField] private float edgePadding = 0.5f;
-    [SerializeField] private float spawnHeightAboveScreen = 1f;
+    [SerializeField] private float spawnHeightBelowScreen = 1f;
 
     // 0 = easy, 1 = hard. Set by DifficultySystem.
     private float difficulty;
@@ -43,7 +43,7 @@ public class FruitSpawner : MonoBehaviour
         set => difficulty = Mathf.Clamp01(value);
     }
 
-    // Game over (step 8) switches this off
+    // Game over switches this off
     public bool IsSpawning { get; set; } = true;
 
     private Camera cam;
@@ -52,7 +52,7 @@ public class FruitSpawner : MonoBehaviour
     private void Start()
     {
         cam = Camera.main;
-        timer = 0.5f; // first fruit comes quickly
+        timer = 0.5f;
     }
 
     private void Update()
@@ -64,7 +64,6 @@ public class FruitSpawner : MonoBehaviour
         {
             SpawnOne();
 
-            // Pattern: sometimes drop a second fruit at the same time
             if (Random.value < Mathf.Lerp(0f, hardDoubleSpawnChance, difficulty))
             {
                 SpawnOne();
@@ -80,10 +79,11 @@ public class FruitSpawner : MonoBehaviour
         GameObject prefab = PickPrefab();
         if (prefab == null) return;
 
+        // Random X inside the pit, Y just BELOW the bottom of the screen
         float halfWidth = cam.orthographicSize * cam.aspect;
         float limit = halfWidth - edgePadding;
         float x = Random.Range(-limit, limit);
-        float y = cam.orthographicSize + spawnHeightAboveScreen;
+        float y = -(cam.orthographicSize + spawnHeightBelowScreen);
 
         GameObject obj = Instantiate(prefab, new Vector3(x, y, 0f), Quaternion.identity, transform);
 
@@ -91,7 +91,7 @@ public class FruitSpawner : MonoBehaviour
         if (fruit != null)
         {
             float speedMultiplier = Mathf.Lerp(1f, hardSpeedMultiplier, difficulty);
-            fruit.fallSpeed = Random.Range(minFallSpeed, maxFallSpeed) * speedMultiplier;
+            fruit.riseSpeed = Random.Range(minRiseSpeed, maxRiseSpeed) * speedMultiplier;
         }
     }
 
@@ -100,7 +100,6 @@ public class FruitSpawner : MonoBehaviour
         return Mathf.Lerp(e.weightEasy, e.weightHard, difficulty);
     }
 
-    // Weighted random pick, using the weights for the current difficulty
     private GameObject PickPrefab()
     {
         if (entries == null || entries.Length == 0) return null;
