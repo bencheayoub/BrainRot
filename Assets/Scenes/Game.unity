@@ -664,6 +664,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1358307663}
   - component: {fileID: 1358307664}
+  - component: {fileID: 1358307665}
+  - component: {fileID: 1358307666}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -700,6 +702,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   maxHearts: 3
   spawner: {fileID: 808691527}
+--- !u!114 &1358307665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358307662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e9182e1e21b3f23a2f8d25ce496d71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScorePopups
+  textSize: 0.08
+  fontSize: 64
+  bonusThreshold: 50
+  gainColor: {r: 0.3, g: 1, b: 0.35, a: 1}
+  lossColor: {r: 1, g: 0.3, b: 0.3, a: 1}
+  bonusColor: {r: 1, g: 0.85, b: 0.1, a: 1}
+  riseDistance: 1.3
+  duration: 0.9
+  startHeightOffset: 0.6
+--- !u!114 &1358307666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358307662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36d1da384253d9ce98ae76192870d5c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HUDController
+  heartFull: {fileID: 0}
+  heartEmpty: {fileID: 0}
+  scoreIcon: {fileID: 0}
+  heartSize: 90
+  heartSpacing: 10
+  margin: 40
+  scoreIconSize: 80
+  scoreFontSize: 64
 --- !u!1 &1588942076
 GameObject:
   m_ObjectHideFlags: 0
