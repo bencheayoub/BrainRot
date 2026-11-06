@@ -184,10 +184,32 @@ public class MainMenuController : MonoBehaviour
         Transform p = settingsPanel.transform;
 
         CreateText("Title", p, "SETTINGS", 110, titleColor, new Vector2(0f, 600f), new Vector2(1000f, 200f));
-        CreateText("Info", p, "Music and sound effects\nswitches come in step 15.", 54, Color.white,
-            new Vector2(0f, 150f), new Vector2(900f, 300f));
-        CreateButton("BackButton", p, "BACK", new Vector2(0f, -300f), buttonSize, buttonColor, true,
+        CreateToggle("MUSIC", p, new Vector2(0f, 250f), buttonSize,
+            () => GameAudio.MusicOn, v => GameAudio.MusicOn = v);
+        CreateToggle("SOUND", p, new Vector2(0f, 50f), buttonSize,
+            () => GameAudio.SfxOn, v => GameAudio.SfxOn = v);
+        CreateButton("BackButton", p, "BACK", new Vector2(0f, -250f), buttonSize, buttonColor, true,
             () => ShowPanel(mainPanel));
+    }
+
+    // A button that flips an ON/OFF setting and shows its state ("MUSIC: ON")
+    private void CreateToggle(string title, Transform parent, Vector2 pos, Vector2 size,
+                              System.Func<bool> get, System.Action<bool> set)
+    {
+        Button btn = CreateButton(title + "Toggle", parent, null, pos, size, playColor, true, () => { });
+        Image img = btn.GetComponent<Image>();
+        Text label = CreateText("Label", btn.transform, "", 64, Color.white, Vector2.zero, size);
+
+        void Refresh()
+        {
+            bool on = get();
+            label.text = title + ": " + (on ? "ON" : "OFF");
+            if (buttonSprite != null) img.color = on ? Color.white : new Color(0.55f, 0.55f, 0.55f);
+            else img.color = on ? playColor : quitColor;
+        }
+
+        btn.onClick.AddListener(() => { set(!get()); Refresh(); });
+        Refresh();
     }
 
     // ----------------------------------------------------------------- helpers
