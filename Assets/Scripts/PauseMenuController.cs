@@ -13,6 +13,16 @@ public class PauseMenuController : MonoBehaviour
 {
     public static bool IsPaused { get; private set; }
 
+    // The pause button's rectangle, so the player can ignore presses on it
+    private static RectTransform pauseButtonRect;
+
+    // True when a screen position (mouse or finger) is on the visible pause button
+    public static bool IsOverPauseButton(Vector2 screenPosition)
+    {
+        if (pauseButtonRect == null || !pauseButtonRect.gameObject.activeInHierarchy) return false;
+        return RectTransformUtility.RectangleContainsScreenPoint(pauseButtonRect, screenPosition, null);
+    }
+
     [Header("Scenes")]
     [SerializeField] private string menuSceneName = "MainMenu";
 
@@ -56,6 +66,8 @@ public class PauseMenuController : MonoBehaviour
     private void OnDestroy()
     {
         if (gm != null) gm.GameOver -= OnGameOver;
+
+        pauseButtonRect = null;
 
         // Safety: never leave the game frozen when this scene ends or Play stops
         IsPaused = false;
@@ -169,6 +181,7 @@ public class PauseMenuController : MonoBehaviour
         rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 1f);
         rt.pivot = new Vector2(0.5f, 1f);
         rt.anchoredPosition = new Vector2(0f, -margin);
+        pauseButtonRect = rt;
 
         if (pauseIcon != null)
         {

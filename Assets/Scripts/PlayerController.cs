@@ -67,11 +67,15 @@ public class PlayerController : MonoBehaviour
         }
 
         // Mouse or touch: hold the left or right half of the screen
+        // (a press on the pause button does not count)
         Pointer ptr = Pointer.current;
         if (x == 0f && ptr != null && ptr.press.isPressed)
         {
-            float screenX = ptr.position.ReadValue().x;
-            x = screenX < Screen.width * 0.5f ? -1f : 1f;
+            Vector2 screenPos = ptr.position.ReadValue();
+            if (!PauseMenuController.IsOverPauseButton(screenPos))
+            {
+                x = screenPos.x < Screen.width * 0.5f ? -1f : 1f;
+            }
         }
 
         return x;
@@ -80,7 +84,11 @@ public class PlayerController : MonoBehaviour
 
         if (x == 0f && Input.GetMouseButton(0))
         {
-            x = Input.mousePosition.x < Screen.width * 0.5f ? -1f : 1f;
+            Vector2 screenPos = Input.mousePosition;
+            if (!PauseMenuController.IsOverPauseButton(screenPos))
+            {
+                x = screenPos.x < Screen.width * 0.5f ? -1f : 1f;
+            }
         }
 
         return x;
