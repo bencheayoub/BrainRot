@@ -309,6 +309,7 @@ public class MainMenuController : MonoBehaviour
         Button btn = obj.GetComponent<Button>();
         btn.targetGraphic = img;
         btn.navigation = new Navigation { mode = Navigation.Mode.None };
+        btn.onClick.AddListener(SoundManager.PlayClick); // click sound first, then the action
         btn.onClick.AddListener(onClick);
 
         if (!string.IsNullOrEmpty(label))
