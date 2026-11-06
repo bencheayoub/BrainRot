@@ -5,6 +5,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    private const string HighScoreKey = "FALL_HighScore";
+
     [Header("Rules")]
     [SerializeField] private int maxHearts = 3;
 
@@ -15,6 +17,10 @@ public class GameManager : MonoBehaviour
     public int Hearts { get; private set; }
     public int MaxHearts => maxHearts;
     public bool IsGameOver { get; private set; }
+
+    // Best score ever saved on this device, and whether this run just beat it
+    public int HighScore { get; private set; }
+    public bool IsNewHighScore { get; private set; }
 
     // The HUD, pop-ups and sounds listen to these
     public event Action<int> ScoreChanged;
@@ -27,6 +33,7 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         Hearts = maxHearts;
+        HighScore = PlayerPrefs.GetInt(HighScoreKey, 0);
     }
 
     // Called by the player when it touches a fruit or an obstacle
@@ -72,6 +79,15 @@ public class GameManager : MonoBehaviour
         if (spawner != null)
         {
             spawner.IsSpawning = false;
+        }
+
+        // Save the high score before anyone listens to GameOver
+        if (Score > HighScore)
+        {
+            HighScore = Score;
+            IsNewHighScore = true;
+            PlayerPrefs.SetInt(HighScoreKey, HighScore);
+            PlayerPrefs.Save();
         }
 
         GameOver?.Invoke();
