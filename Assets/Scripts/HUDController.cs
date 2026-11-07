@@ -83,7 +83,7 @@ public class HUDController : MonoBehaviour
 
     private void OnGameOver()
     {
-        gameOverText.gameObject.SetActive(true);
+        //
     }
 
     private void UpdateHearts(int current)

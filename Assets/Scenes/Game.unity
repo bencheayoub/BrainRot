@@ -119,6 +119,56 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &64755369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 64755371}
+  - component: {fileID: 64755370}
+  m_Layer: 0
+  m_Name: UISkinner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &64755370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64755369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68a2e6320242e78980e09d733f870b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UISkinner
+  menuBackground: {fileID: -844773298834026925, guid: 89436d51bc38ce9ffbee58e686533d19, type: 3}
+  playButton: {fileID: -3227648988771511903, guid: 8f2da6f6308426a7ea8e8dacb198f010, type: 3}
+  charactersButton: {fileID: -5884511039363698573, guid: 578f472cc9a694e54858024ba8438ba0, type: 3}
+  settingsButton: {fileID: -7941085776763758979, guid: 76e15b34848c0fb16b3c1dec95a5886b, type: 3}
+  quitButton: {fileID: 916577628950400133, guid: 0d66bc83a9311805cbc111d54510b202, type: 3}
+  gameOverBackground: {fileID: 0}
+--- !u!4 &64755371
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64755369}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,8 +859,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d1da384253d9ce98ae76192870d5c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDController
-  heartFull: {fileID: 0}
-  heartEmpty: {fileID: 0}
+  heartFull: {fileID: -1218823883695198015, guid: 17b4d38d025194e3caea64955b98ace6, type: 3}
+  heartEmpty: {fileID: -511133062249068954, guid: a5d4910018fde60919c5e8516e7a4821, type: 3}
   scoreIcon: {fileID: 0}
   heartSize: 90
   heartSpacing: 10
@@ -984,7 +1034,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1690850400}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -1113,3 +1163,4 @@ SceneRoots:
   - {fileID: 2093247424}
   - {fileID: 519957302}
   - {fileID: 1658013954}
+  - {fileID: 64755371}
