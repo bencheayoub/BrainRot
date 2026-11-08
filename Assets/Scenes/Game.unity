@@ -1220,21 +1220,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a10a9110177b76c2da2105d8a2f671e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
-  music: {fileID: 0}
+  music: {fileID: 8300000, guid: 64628ba4e4bcdd3b086805abff1686f5, type: 3}
   musicVolume: 0.5
-  buttonClicks: []
-  hoverSounds: []
-  startSounds: []
-  exitSounds: []
-  pauseSounds: []
+  buttonClicks:
+  - {fileID: 8300000, guid: 41ce063647765bad79e5cd0ceaad57a5, type: 3}
+  hoverSounds:
+  - {fileID: 8300000, guid: d5c105d2d1f26ec21b57bb6fea95bb3f, type: 3}
+  startSounds:
+  - {fileID: 8300000, guid: 848725c0c130c12cba0055a13ad2162f, type: 3}
+  - {fileID: 8300000, guid: f9b9e6d6dc1784f47967cadf4305b560, type: 3}
+  exitSounds:
+  - {fileID: 8300000, guid: 8bd911e39c3deef458414ed6df310b99, type: 3}
+  pauseSounds:
+  - {fileID: 8300000, guid: 07104ae5e7357234696ba1e62d4e5474, type: 3}
   goodCatchSounds: []
   badCatchSounds: []
-  goldenCatchSounds: []
-  obstacleHitSounds: []
-  gameOverSounds: []
+  goldenCatchSounds:
+  - {fileID: 8300000, guid: 7c7e6d037e3d3f724a17cf9fd87cf04e, type: 3}
+  - {fileID: 8300000, guid: 02d2b879b69dc77e8a8964eef3fcc73e, type: 3}
+  obstacleHitSounds:
+  - {fileID: 8300000, guid: 30180ff192d5a33179d88bd84e6beb15, type: 3}
+  - {fileID: 8300000, guid: bc2c499342ad1504eba744bf0727f439, type: 3}
+  gameOverSounds:
+  - {fileID: 8300000, guid: e21aefb230f47b21ca73cbf5dd8ea864, type: 3}
+  - {fileID: 8300000, guid: a83940d6bd9b94d328e75c222ad6a5ed, type: 3}
+  - {fileID: 8300000, guid: 3f6c3a893bd44c030991f7e82c4c2af9, type: 3}
+  - {fileID: 8300000, guid: b9d10b91bc26b0b03ab4ccd7c4411c4f, type: 3}
   sfxVolume: 1
   hoverVolume: 0.5
-  autoClickAllButtons: 0
+  autoClickAllButtons: 1
   hoverOnAllButtons: 1
   startWords:
   - play

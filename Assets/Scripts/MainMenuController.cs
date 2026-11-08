@@ -8,7 +8,11 @@ using UnityEngine.InputSystem.UI;
 #endif
 
 // Builds the whole main menu in code: main panel, character selection and settings.
-// Put this on an empty GameObject in the MainMenu scene. Nothing else is needed.
+// Put this on an empty GameObject in the MainMenu scene.
+//
+// Character selection is now a carousel: ONE big card in the middle, with < and > arrows.
+// The card shows a live, slowly spinning 3D preview of the character (drag the prefabs into
+// "Character Prefabs"). Without a prefab it shows a letter placeholder, so nothing is empty.
 public class MainMenuController : MonoBehaviour
 {
     [Header("Scenes")]
@@ -21,8 +25,20 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private Sprite background;
     [SerializeField] private Sprite logo;
     [SerializeField] private Sprite buttonSprite;
-    [Tooltip("Element 0 = Tung Tung Tung Sahur, Element 1 = Potato")]
+    [Tooltip("Optional 2D picture per character. If one is set it is shown instead of the 3D preview.")]
     [SerializeField] private Sprite[] characterPreviews;
+
+    [Header("3D previews (same order as CharacterSelection)")]
+    [Tooltip("0 = Tung Tung Tung Sahur, 1 = Potato with Glasses, 2 = Potato with Moustache, 3 = Ballerina Cappuccina")]
+    [SerializeField] private GameObject[] characterPrefabs;
+    [Tooltip("Optional texture per character (same idea as in PlayerVisual). Empty = keep the model's own material")]
+    [SerializeField] private Texture2D[] characterTextures;
+    [Tooltip("Optional rotation per character, e.g. X = -90 if the model lies down, Y = 180 if it faces away")]
+    [SerializeField] private Vector3[] previewRotations;
+    [Tooltip("How tall the character appears in the preview (the camera frames about 2.4 units)")]
+    [SerializeField] private float previewHeight = 1.6f;
+    [Tooltip("Spin speed in degrees per second. 0 = no spin")]
+    [SerializeField] private float previewSpin = 40f;
 
     private readonly Color bgColor = new Color(0.07f, 0.09f, 0.2f);
     private readonly Color titleColor = new Color(1f, 0.85f, 0.2f);
@@ -39,8 +55,22 @@ public class MainMenuController : MonoBehaviour
     private GameObject characterPanel;
     private GameObject settingsPanel;
     private Text heroLabel;
-    private Image[] cardImages;
-    private Text[] cardStatus;
+
+    // Carousel
+    private int viewIndex;               // the character currently shown on the card
+    private Image cardImage;
+    private Text cardName;
+    private Text cardStatus;
+    private Text cardCounter;
+    private Text placeholderText;
+    private Image spriteImage;
+    private RawImage previewRaw;
+
+    // 3D preview stage
+    private GameObject stageRoot;
+    private Transform previewPivot;
+    private RenderTexture previewRT;
+    private GameObject[] previewModels;
 
     private void Start()
     {
@@ -53,6 +83,18 @@ public class MainMenuController : MonoBehaviour
         BuildUI();
         RefreshHero();
         ShowPanel(mainPanel);
+    }
+
+    private void Update()
+    {
+        if (previewPivot != null && previewSpin != 0f && characterPanel.activeInHierarchy)
+            previewPivot.Rotate(0f, previewSpin * Time.unscaledDeltaTime, 0f, Space.World);
+    }
+
+    private void OnDestroy()
+    {
+        if (previewRT != null) { previewRT.Release(); Destroy(previewRT); }
+        if (stageRoot != null) Destroy(stageRoot);
     }
 
     // ---------------------------------------------------------------- actions
@@ -71,9 +113,17 @@ public class MainMenuController : MonoBehaviour
 #endif
     }
 
-    private void OnCardClicked(int index)
+    private void OnCardClicked()
     {
-        CharacterSelection.Index = index;
+        CharacterSelection.Index = viewIndex;
+        RefreshHero();
+    }
+
+    private void OnArrow(int direction)
+    {
+        int count = CharacterSelection.Names.Length;
+        viewIndex = (viewIndex + direction + count) % count;
+        if (previewPivot != null) previewPivot.rotation = Quaternion.identity;
         RefreshHero();
     }
 
@@ -82,18 +132,45 @@ public class MainMenuController : MonoBehaviour
         mainPanel.SetActive(panel == mainPanel);
         characterPanel.SetActive(panel == characterPanel);
         settingsPanel.SetActive(panel == settingsPanel);
+
+        // When opening the hero screen, start on the character that is currently selected
+        if (panel == characterPanel)
+        {
+            viewIndex = CharacterSelection.Index;
+            RefreshHero();
+        }
     }
 
     private void RefreshHero()
     {
         heroLabel.text = "HERO: " + CharacterSelection.Name;
 
-        for (int i = 0; i < cardImages.Length; i++)
+        if (cardImage == null) return;
+
+        int count = CharacterSelection.Names.Length;
+        bool selected = viewIndex == CharacterSelection.Index;
+
+        cardImage.color = selected ? cardSelectedColor : cardColor;
+        cardName.text = CharacterSelection.Names[viewIndex];
+        cardStatus.text = selected ? "SELECTED" : "TAP TO SELECT";
+        cardCounter.text = (viewIndex + 1) + " / " + count;
+
+        Sprite sprite = (characterPreviews != null && viewIndex < characterPreviews.Length)
+            ? characterPreviews[viewIndex] : null;
+
+        bool hasModel = previewModels != null && viewIndex < previewModels.Length && previewModels[viewIndex] != null;
+
+        if (previewModels != null)
         {
-            bool selected = i == CharacterSelection.Index;
-            cardImages[i].color = selected ? cardSelectedColor : cardColor;
-            cardStatus[i].text = selected ? "SELECTED" : "TAP TO SELECT";
+            for (int i = 0; i < previewModels.Length; i++)
+                if (previewModels[i] != null) previewModels[i].SetActive(i == viewIndex && sprite == null);
         }
+
+        spriteImage.sprite = sprite;
+        spriteImage.enabled = sprite != null;
+        previewRaw.enabled = sprite == null && hasModel;
+        placeholderText.enabled = sprite == null && !hasModel;
+        placeholderText.text = CharacterSelection.Names[viewIndex].Substring(0, 1);
     }
 
     // ------------------------------------------------------------- UI building
@@ -150,33 +227,152 @@ public class MainMenuController : MonoBehaviour
     {
         Transform p = characterPanel.transform;
 
+        // Keep this exact text: UISkinner finds the screen by it
         CreateText("Title", p, "CHOOSE YOUR HERO", 90, titleColor, new Vector2(0f, 700f), new Vector2(1000f, 150f));
 
-        int count = CharacterSelection.Names.Length;
-        cardImages = new Image[count];
-        cardStatus = new Text[count];
+        BuildPreviewStage();
+        viewIndex = CharacterSelection.Index;
 
-        for (int i = 0; i < count; i++)
-        {
-            int index = i; // copy, so each button remembers its own number
-            float x = (i - (count - 1) * 0.5f) * 500f;
+        // One big card in the middle
+        Button card = CreateButton("Card", p, null, new Vector2(0f, 120f), new Vector2(600f, 800f),
+            cardColor, false, OnCardClicked);
+        cardImage = card.GetComponent<Image>();
 
-            Button card = CreateButton("Card" + i, p, null, new Vector2(x, 120f), new Vector2(460f, 760f),
-                cardColor, false, () => OnCardClicked(index));
-            cardImages[i] = card.GetComponent<Image>();
+        CreateImage("PreviewBackdrop", card.transform, null, new Vector2(0f, 150f), new Vector2(520f, 520f))
+            .color = new Color(0f, 0f, 0f, 0.25f);
 
-            Sprite preview = (characterPreviews != null && i < characterPreviews.Length) ? characterPreviews[i] : null;
-            Image previewImg = CreateImage("Preview", card.transform, preview, new Vector2(0f, 130f), new Vector2(380f, 380f));
-            if (preview == null) previewImg.color = new Color(0f, 0f, 0f, 0.25f);
+        GameObject rawGO = new GameObject("Preview3D", typeof(RectTransform), typeof(RawImage));
+        rawGO.transform.SetParent(card.transform, false);
+        previewRaw = rawGO.GetComponent<RawImage>();
+        previewRaw.texture = previewRT;
+        previewRaw.raycastTarget = false;
+        RectTransform rawRt = previewRaw.rectTransform;
+        rawRt.anchorMin = rawRt.anchorMax = rawRt.pivot = new Vector2(0.5f, 0.5f);
+        rawRt.sizeDelta = new Vector2(520f, 520f);
+        rawRt.anchoredPosition = new Vector2(0f, 150f);
 
-            CreateText("Name", card.transform, CharacterSelection.Names[i], 48, Color.white,
-                new Vector2(0f, -170f), new Vector2(420f, 140f));
-            cardStatus[i] = CreateText("Status", card.transform, "", 38, Color.white,
-                new Vector2(0f, -300f), new Vector2(420f, 70f));
-        }
+        spriteImage = CreateImage("PreviewSprite", card.transform, null, new Vector2(0f, 150f), new Vector2(520f, 520f));
+        placeholderText = CreateText("Placeholder", card.transform, "?", 260, new Color(1f, 1f, 1f, 0.5f),
+            new Vector2(0f, 150f), new Vector2(520f, 400f));
+
+        cardName = CreateText("Name", card.transform, "", 56, Color.white, new Vector2(0f, -210f), new Vector2(540f, 150f));
+        cardStatus = CreateText("Status", card.transform, "", 40, Color.white, new Vector2(0f, -330f), new Vector2(540f, 70f));
+
+        // Arrows left and right of the card
+        CreateButton("LeftArrow", p, "<", new Vector2(-420f, 120f), new Vector2(150f, 150f),
+            buttonColor, false, () => OnArrow(-1));
+        CreateButton("RightArrow", p, ">", new Vector2(420f, 120f), new Vector2(150f, 150f),
+            buttonColor, false, () => OnArrow(1));
+
+        cardCounter = CreateText("Counter", p, "", 44, Color.white, new Vector2(0f, -390f), new Vector2(400f, 70f));
 
         CreateButton("BackButton", p, "BACK", new Vector2(0f, -560f), buttonSize, buttonColor, true,
             () => ShowPanel(mainPanel));
+    }
+
+    // A tiny hidden "photo studio" far below the menu: a camera filming the spinning model
+    // into a RenderTexture, which the card then shows.
+    private void BuildPreviewStage()
+    {
+        stageRoot = new GameObject("CharacterPreviewStage");
+        stageRoot.transform.position = new Vector3(0f, -1000f, 0f);
+
+        previewPivot = new GameObject("Pivot").transform;
+        previewPivot.SetParent(stageRoot.transform, false);
+
+        previewRT = new RenderTexture(512, 512, 16, RenderTextureFormat.ARGB32);
+
+        GameObject camGO = new GameObject("PreviewCamera");
+        camGO.transform.SetParent(stageRoot.transform, false);
+        camGO.transform.localPosition = new Vector3(0f, 0f, -4.5f);
+        Camera cam = camGO.AddComponent<Camera>();
+        cam.clearFlags = CameraClearFlags.SolidColor;
+        cam.backgroundColor = new Color(0f, 0f, 0f, 0f);
+        cam.fieldOfView = 30f;
+        cam.nearClipPlane = 0.1f;
+        cam.farClipPlane = 20f;
+        cam.depth = -10f;
+        cam.targetTexture = previewRT;
+
+        GameObject lightGO = new GameObject("PreviewLight");
+        lightGO.transform.SetParent(stageRoot.transform, false);
+        lightGO.transform.rotation = Quaternion.Euler(30f, -30f, 0f);
+        Light light = lightGO.AddComponent<Light>();
+        light.type = LightType.Directional;
+        light.intensity = 1.2f;
+
+        int count = CharacterSelection.Names.Length;
+        previewModels = new GameObject[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            if (characterPrefabs == null || i >= characterPrefabs.Length || characterPrefabs[i] == null) continue;
+
+            GameObject model = Instantiate(characterPrefabs[i], previewPivot);
+            model.name = "Preview_" + CharacterSelection.Names[i];
+            StripGameplayParts(model);
+
+            Vector3 rot = (previewRotations != null && i < previewRotations.Length) ? previewRotations[i] : Vector3.zero;
+            model.transform.localPosition = Vector3.zero;
+            model.transform.localRotation = model.transform.localRotation * Quaternion.Euler(rot);
+
+            if (characterTextures != null && i < characterTextures.Length && characterTextures[i] != null)
+                ApplyTexture(model, characterTextures[i]);
+
+            if (TryGetBounds(model, out Bounds b) && b.size.y > 0.0001f)
+            {
+                model.transform.localScale *= previewHeight / b.size.y;
+                if (TryGetBounds(model, out b))
+                    model.transform.position += previewPivot.position - b.center;
+            }
+
+            model.SetActive(false);
+            previewModels[i] = model;
+        }
+    }
+
+    private static void StripGameplayParts(GameObject model)
+    {
+        foreach (Collider c in model.GetComponentsInChildren<Collider>(true)) Destroy(c);
+        foreach (Rigidbody rb in model.GetComponentsInChildren<Rigidbody>(true)) Destroy(rb);
+        foreach (AudioListener al in model.GetComponentsInChildren<AudioListener>(true)) Destroy(al);
+        foreach (Camera cam in model.GetComponentsInChildren<Camera>(true)) { cam.enabled = false; Destroy(cam); }
+        foreach (Light l in model.GetComponentsInChildren<Light>(true)) { l.enabled = false; Destroy(l); }
+    }
+
+    private static bool TryGetBounds(GameObject model, out Bounds bounds)
+    {
+        bounds = new Bounds();
+        bool found = false;
+        foreach (Renderer r in model.GetComponentsInChildren<Renderer>())
+        {
+            if (r is ParticleSystemRenderer) continue;
+            if (!found) { bounds = r.bounds; found = true; }
+            else bounds.Encapsulate(r.bounds);
+        }
+        return found;
+    }
+
+    private static void ApplyTexture(GameObject model, Texture2D texture)
+    {
+        GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        Material baseMat = temp.GetComponent<Renderer>().sharedMaterial;
+        Destroy(temp);
+        if (baseMat == null) return;
+
+        foreach (Renderer r in model.GetComponentsInChildren<Renderer>(true))
+        {
+            if (r is ParticleSystemRenderer) continue;
+            Material[] mats = r.sharedMaterials;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                Material mat = new Material(baseMat);
+                mat.mainTexture = texture;
+                mat.color = Color.white;
+                mats[i] = mat;
+            }
+            r.sharedMaterials = mats;
+        }
     }
 
     private void BuildSettingsPanel()
