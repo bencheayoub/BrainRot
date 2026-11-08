@@ -753,12 +753,22 @@ MonoBehaviour:
   - prefab: {fileID: 1272087055745080575, guid: e48c69e15d6859d22a9a049dc54f4d8b, type: 3}
     weightEasy: 5
     weightHard: 30
-  easyInterval: 1.3
-  hardInterval: 0.5
+  easyInterval: 1
+  hardInterval: 0.4
   minRiseSpeed: 1.5
   maxRiseSpeed: 3.2
-  hardSpeedMultiplier: 1.8
-  hardDoubleSpawnChance: 0.35
+  hardSpeedMultiplier: 2.2
+  hardDoubleSpawnChance: 0.5
+  usePatterns: 1
+  patternStartDifficulty: 0.1
+  patternEasyCooldown: 10
+  patternHardCooldown: 4
+  gapWidthEasy: 3.2
+  gapWidthHard: 2.4
+  wallSpacing: 0.9
+  maxGapShift: 3
+  hardMaxWalls: 3
+  goldenInGapChance: 0.25
   edgePadding: 0.5
   spawnHeightBelowScreen: 1
 --- !u!1 &832575517
@@ -822,6 +832,7 @@ GameObject:
   - component: {fileID: 1358307664}
   - component: {fileID: 1358307665}
   - component: {fileID: 1358307666}
+  - component: {fileID: 1358307667}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -899,6 +910,22 @@ MonoBehaviour:
   margin: 40
   scoreIconSize: 80
   scoreFontSize: 64
+--- !u!114 &1358307667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358307662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec84cfdf5b8bfa3a7a9dd2b24d6341dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitFeedback
+  hurtColor: {r: 1, g: 0.1, b: 0.1, a: 0.5}
+  goldColor: {r: 1, g: 0.85, b: 0.2, a: 0.3}
+  badColor: {r: 0.45, g: 0.25, b: 0.1, a: 0.25}
+  flashDuration: 0.35
 --- !u!1 &1588942076
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,7 +957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DifficultySystem
   spawner: {fileID: 808691527}
   background: {fileID: 1690850401}
-  secondsToMaxDifficulty: 90
+  secondsToMaxDifficulty: 60
   difficultyCurve:
     serializedVersion: 2
     m_Curve:
