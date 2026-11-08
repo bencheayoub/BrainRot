@@ -496,6 +496,7 @@ GameObject:
   - component: {fileID: 547526597}
   - component: {fileID: 547526596}
   - component: {fileID: 547526598}
+  - component: {fileID: 547526599}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -664,6 +665,37 @@ MonoBehaviour:
   catchPop: 0.2
   goldenSpinDuration: 0.6
   funnyIdle: 1
+--- !u!114 &547526599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547526591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86f0597cec70b0c258b2ed7a72fdfe73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerVisual
+  models:
+  - label: Tung Tung Tung Sahur
+    prefab: {fileID: 919132149155446097, guid: 8b375c08a3768e3e4ba86d2a647d9fc9, type: 3}
+    texture: {fileID: 2800000, guid: fa6cbbd4e3c511bcfbd86eefc73085da, type: 3}
+    targetHeight: 1.6
+    scale: 1
+    rotation: {x: 0, y: 180, z: 0}
+    positionOffset: {x: 0, y: 0, z: 0}
+    placeholderShape: 1
+    placeholderColor: {r: 0.55, g: 0.35, b: 0.15, a: 1}
+  - label: Potato with Glasses
+    prefab: {fileID: 0}
+    texture: {fileID: 0}
+    targetHeight: 1.2
+    scale: 1.3
+    rotation: {x: 0, y: 0, z: 0}
+    positionOffset: {x: 0, y: 0, z: 0}
+    placeholderShape: 0
+    placeholderColor: {r: 0.85, g: 0.7, b: 0.4, a: 1}
 --- !u!1 &808691524
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,6 +1025,7 @@ MonoBehaviour:
   obstacleHit: {fileID: 0}
   gameOver: {fileID: 0}
   sfxVolume: 1
+  autoClickAllButtons: 0
 --- !u!1 &1690850400
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Plays the music and the sound effects. Every slot is optional: an empty slot stays silent.
 // Put this on an empty GameObject in BOTH the MainMenu scene and the Game scene.
@@ -20,9 +22,16 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip gameOver;
     [Range(0f, 1f)] [SerializeField] private float sfxVolume = 1f;
 
+    [Header("Buttons")]
+    [Tooltip("Turn ON if some buttons make no click sound. Leave OFF if your menus already call SoundManager.PlayClick(), or you will hear it twice.")]
+    [SerializeField] private bool autoClickAllButtons = false;
+
     private AudioSource musicSource;
     private AudioSource sfxSource;
     private GameManager gm;
+
+    private readonly HashSet<Button> hookedButtons = new HashSet<Button>();
+    private float scanTimer;
 
     private void Awake()
     {
@@ -52,6 +61,25 @@ public class SoundManager : MonoBehaviour
         ApplySettings();
 
         if (music != null) musicSource.Play();
+    }
+
+    private void Update()
+    {
+        if (!autoClickAllButtons) return;
+
+        // Buttons can be created or shown later, so check a couple of times per second
+        scanTimer -= Time.unscaledDeltaTime;
+        if (scanTimer > 0f) return;
+        scanTimer = 0.5f;
+
+        Button[] buttons = FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (Button b in buttons)
+        {
+            if (hookedButtons.Add(b))
+            {
+                b.onClick.AddListener(PlayClick);
+            }
+        }
     }
 
     private void OnDestroy()
