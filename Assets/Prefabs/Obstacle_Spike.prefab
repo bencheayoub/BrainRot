@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2605264529371341588}
   - component: {fileID: 8427880893106830462}
   - component: {fileID: 6935715916178297343}
+  - component: {fileID: 1903199360360453415}
   m_Layer: 0
   m_Name: Obstacle_Spike
   m_TagString: Untagged
@@ -129,4 +130,27 @@ MonoBehaviour:
   points: 0
   heartDamage: 1
   rotationSpeed: 90
-  fallSpeed: 3
+  swayAmount: 0.5
+  swaySpeed: 1.5
+  obstacleSwayFactor: 0.4
+  riseSpeed: 3
+--- !u!114 &1903199360360453415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272087055745080575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0740ac8a57ba36b6b830e2da3e4b86e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FruitVisual
+  model: {fileID: 919132149155446097, guid: b6cb8e01957ae4975a43f8e5f1150118, type: 3}
+  texture: {fileID: 0}
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  targetHeight: 0.7
+  scale: 1
+  rotation: {x: 0, y: 0, z: 0}
+  fitHitbox: 1
+  hitboxScale: 0.8

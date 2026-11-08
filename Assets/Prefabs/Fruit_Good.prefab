@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6347330597756273695}
   - component: {fileID: 7688716391826115061}
   - component: {fileID: 578554318530778869}
+  - component: {fileID: -2442320074388036086}
   m_Layer: 0
   m_Name: Fruit_Good
   m_TagString: Untagged
@@ -129,4 +130,27 @@ MonoBehaviour:
   points: 10
   heartDamage: 0
   rotationSpeed: 90
-  fallSpeed: 3
+  swayAmount: 0.5
+  swaySpeed: 1.5
+  obstacleSwayFactor: 0.4
+  riseSpeed: 3
+--- !u!114 &-2442320074388036086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2744899193145814718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0740ac8a57ba36b6b830e2da3e4b86e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FruitVisual
+  model: {fileID: 919132149155446097, guid: 2beae44dd0fa638d2b48d3ff32aa6acf, type: 3}
+  texture: {fileID: 0}
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  targetHeight: 0.7
+  scale: 1
+  rotation: {x: 0, y: 0, z: 0}
+  fitHitbox: 1
+  hitboxScale: 0.8
