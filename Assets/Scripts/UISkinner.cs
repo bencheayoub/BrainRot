@@ -13,6 +13,8 @@ using UnityEngine.UI;
 //   a text reading FINAL SCORE                            -> game over background is added, "GAME OVER" texts are hidden
 // Flat full-screen colored panels inside a screen (the navy fill, the dark overlay) are switched off so the art is visible.
 // Works with both normal UI Text and TextMeshPro. Anything it can't match is left unchanged.
+// Runs its Start AFTER the menu scripts built their UI, so the art is applied before the first frame is drawn
+[DefaultExecutionOrder(100)]
 public class UISkinner : MonoBehaviour
 {
     [Header("Main menu scene")]
@@ -69,11 +71,15 @@ public class UISkinner : MonoBehaviour
 
     private IEnumerator Start()
     {
-        // The other scripts build their UI in their own Start(), so scan repeatedly
+        // The other scripts build their UI in their own Start(), so scan repeatedly.
+        // For the first 1.5 seconds scan EVERY frame, so nothing flashes without art, then relax.
+        float startTime = Time.realtimeSinceStartup;
         while (true)
         {
             Scan();
-            yield return new WaitForSecondsRealtime(0.25f);
+
+            if (Time.realtimeSinceStartup - startTime < 1.5f) yield return null;
+            else yield return new WaitForSecondsRealtime(0.25f);
         }
     }
 

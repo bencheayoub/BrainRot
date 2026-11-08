@@ -356,7 +356,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -1087,6 +1087,7 @@ MonoBehaviour:
   margin: 40
   scoreIconSize: 80
   scoreFontSize: 64
+  heartOffsetY: 0
 --- !u!114 &1358307667
 MonoBehaviour:
   m_ObjectHideFlags: 0
