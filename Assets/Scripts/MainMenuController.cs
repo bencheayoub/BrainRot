@@ -40,6 +40,14 @@ public class MainMenuController : MonoBehaviour
     [Tooltip("Spin speed in degrees per second. 0 = no spin")]
     [SerializeField] private float previewSpin = 40f;
 
+    [Header("Character screen art (all optional)")]
+    [SerializeField] private Sprite leftArrowSprite;
+    [SerializeField] private Sprite rightArrowSprite;
+    [Tooltip("Card frame picture. Empty = flat colored card")]
+    [SerializeField] private Sprite cardSprite;
+    [Tooltip("Card frame when this hero is selected. Empty = the normal card gets a golden tint")]
+    [SerializeField] private Sprite cardSelectedSprite;
+
     private readonly Color bgColor = new Color(0.07f, 0.09f, 0.2f);
     private readonly Color titleColor = new Color(1f, 0.85f, 0.2f);
     private readonly Color playColor = new Color(0.2f, 0.7f, 0.35f);
@@ -150,7 +158,17 @@ public class MainMenuController : MonoBehaviour
         int count = CharacterSelection.Names.Length;
         bool selected = viewIndex == CharacterSelection.Index;
 
-        cardImage.color = selected ? cardSelectedColor : cardColor;
+        if (cardSprite != null)
+        {
+            bool hasSelectedArt = cardSelectedSprite != null;
+            cardImage.sprite = (selected && hasSelectedArt) ? cardSelectedSprite : cardSprite;
+            cardImage.preserveAspect = false;
+            cardImage.color = (selected && !hasSelectedArt) ? new Color(1f, 0.85f, 0.45f) : Color.white;
+        }
+        else
+        {
+            cardImage.color = selected ? cardSelectedColor : cardColor;
+        }
         cardName.text = CharacterSelection.Names[viewIndex];
         cardStatus.text = selected ? "SELECTED" : "TAP TO SELECT";
         cardCounter.text = (viewIndex + 1) + " / " + count;
@@ -218,7 +236,9 @@ public class MainMenuController : MonoBehaviour
             () => ShowPanel(characterPanel));
         CreateButton("SettingsButton", p, "SETTINGS", new Vector2(0f, -210f), buttonSize, buttonColor, true,
             () => ShowPanel(settingsPanel));
-        CreateButton("QuitButton", p, "QUIT", new Vector2(0f, -390f), buttonSize, quitColor, true, OnQuit);
+        // A browser game can't quit, so the QUIT button only exists in Editor and desktop builds
+        if (Application.platform != RuntimePlatform.WebGLPlayer)
+            CreateButton("QuitButton", p, "QUIT", new Vector2(0f, -390f), buttonSize, quitColor, true, OnQuit);
 
         heroLabel = CreateText("HeroLabel", p, "", 44, Color.white, new Vector2(0f, -580f), new Vector2(1000f, 100f));
     }
@@ -259,15 +279,30 @@ public class MainMenuController : MonoBehaviour
         cardStatus = CreateText("Status", card.transform, "", 40, Color.white, new Vector2(0f, -330f), new Vector2(540f, 70f));
 
         // Arrows left and right of the card
-        CreateButton("LeftArrow", p, "<", new Vector2(-420f, 120f), new Vector2(150f, 150f),
+        Button left = CreateButton("LeftArrow", p, "<", new Vector2(-420f, 120f), new Vector2(150f, 150f),
             buttonColor, false, () => OnArrow(-1));
-        CreateButton("RightArrow", p, ">", new Vector2(420f, 120f), new Vector2(150f, 150f),
+        Button right = CreateButton("RightArrow", p, ">", new Vector2(420f, 120f), new Vector2(150f, 150f),
             buttonColor, false, () => OnArrow(1));
+        ApplyArrowArt(left, leftArrowSprite);
+        ApplyArrowArt(right, rightArrowSprite);
 
         cardCounter = CreateText("Counter", p, "", 44, Color.white, new Vector2(0f, -390f), new Vector2(400f, 70f));
 
         CreateButton("BackButton", p, "BACK", new Vector2(0f, -560f), buttonSize, buttonColor, true,
             () => ShowPanel(mainPanel));
+    }
+
+    private void ApplyArrowArt(Button btn, Sprite sprite)
+    {
+        if (sprite == null) return;
+
+        Image img = btn.GetComponent<Image>();
+        img.sprite = sprite;
+        img.preserveAspect = true;
+        img.color = Color.white;
+
+        Text label = btn.GetComponentInChildren<Text>(true);
+        if (label != null) label.enabled = false; // the art already shows the arrow
     }
 
     // A tiny hidden "photo studio" far below the menu: a camera filming the spinning model
@@ -412,7 +447,7 @@ public class MainMenuController : MonoBehaviour
 
     private void EnsureEventSystem()
     {
-        if (FindFirstObjectByType<EventSystem>() != null) return;
+        if (FindAnyObjectByType<EventSystem>() != null) return;
 
         GameObject es = new GameObject("EventSystem", typeof(EventSystem));
 #if ENABLE_INPUT_SYSTEM

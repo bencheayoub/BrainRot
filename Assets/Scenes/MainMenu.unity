@@ -349,7 +349,7 @@ MonoBehaviour:
   buttonSprite: {fileID: 0}
   characterPreviews: []
   characterPrefabs:
-  - {fileID: 919132149155446097, guid: 60126bf527193540288e7ae8cf14136f, type: 3}
+  - {fileID: 919132149155446097, guid: 8b375c08a3768e3e4ba86d2a647d9fc9, type: 3}
   - {fileID: 919132149155446097, guid: a37145b693fc177b38be268702105483, type: 3}
   - {fileID: 919132149155446097, guid: 5dc2363f78d325acdbfe505acf6b955b, type: 3}
   - {fileID: 919132149155446097, guid: c1dc0aaa5440bd40abe3f26bdeae037c, type: 3}
@@ -357,6 +357,10 @@ MonoBehaviour:
   previewRotations: []
   previewHeight: 1.6
   previewSpin: 40
+  leftArrowSprite: {fileID: 0}
+  rightArrowSprite: {fileID: 0}
+  cardSprite: {fileID: 0}
+  cardSelectedSprite: {fileID: 0}
 --- !u!4 &872742120
 Transform:
   m_ObjectHideFlags: 0

@@ -19,6 +19,12 @@ public class HUDController : MonoBehaviour
     [SerializeField] private float margin = 40f;
     [SerializeField] private float scoreIconSize = 80f;
     [SerializeField] private int scoreFontSize = 64;
+    [Tooltip("Nudge the hearts up (+) or down (-) if the heart art has empty space and looks off the line")]
+    [SerializeField] private float heartOffsetY = 0f;
+
+    // Distance from the top of the screen to the middle of the HUD row, in canvas units.
+    // The pause button reads this so it sits on the same line. 0 = HUD not built yet.
+    public static float RowCenterFromTop { get; private set; }
 
     private Image[] hearts;
     private Text scoreText;
@@ -56,6 +62,7 @@ public class HUDController : MonoBehaviour
 
     private void OnDestroy()
     {
+        RowCenterFromTop = 0f;
         if (GameManager.Instance == null) return;
         GameManager.Instance.ScoreChanged -= OnScoreChanged;
         GameManager.Instance.HeartsChanged -= OnHeartsChanged;
@@ -120,6 +127,10 @@ public class HUDController : MonoBehaviour
         safe.offsetMin = Vector2.zero;
         safe.offsetMax = Vector2.zero;
 
+        // Everything (hearts, coin, score, pause button) is centered on ONE line
+        float rowCenter = margin + Mathf.Max(heartSize, scoreIconSize) * 0.5f;
+        RowCenterFromTop = rowCenter;
+
         // Hearts, top-left
         int max = GameManager.Instance.MaxHearts;
         hearts = new Image[max];
@@ -130,7 +141,7 @@ public class HUDController : MonoBehaviour
             rt.anchorMin = rt.anchorMax = new Vector2(0f, 1f);
             rt.pivot = new Vector2(0.5f, 0.5f);
             rt.anchoredPosition = new Vector2(margin + heartSize * 0.5f + i * (heartSize + heartSpacing),
-                                              -(margin + heartSize * 0.5f));
+                                              -rowCenter + heartOffsetY);
             hearts[i] = img;
         }
 
@@ -140,16 +151,16 @@ public class HUDController : MonoBehaviour
         icon.color = Color.white;
         RectTransform iconRt = icon.rectTransform;
         iconRt.anchorMin = iconRt.anchorMax = new Vector2(1f, 1f);
-        iconRt.pivot = new Vector2(1f, 1f);
-        iconRt.anchoredPosition = new Vector2(-margin, -margin);
+        iconRt.pivot = new Vector2(1f, 0.5f);
+        iconRt.anchoredPosition = new Vector2(-margin, -rowCenter);
 
         // Score number, to the left of the icon
         scoreText = CreateText("ScoreText", safe, scoreFontSize, TextAnchor.MiddleRight, Color.white);
         RectTransform st = scoreText.rectTransform;
         st.anchorMin = st.anchorMax = new Vector2(1f, 1f);
-        st.pivot = new Vector2(1f, 1f);
+        st.pivot = new Vector2(1f, 0.5f);
         st.sizeDelta = new Vector2(420f, scoreIconSize);
-        st.anchoredPosition = new Vector2(-(margin + scoreIconSize + 15f), -margin);
+        st.anchoredPosition = new Vector2(-(margin + scoreIconSize + 15f), -rowCenter);
 
         // Temporary GAME OVER label (replaced by the game over screen in step 14)
         gameOverText = CreateText("GameOverText", safe, 130, TextAnchor.MiddleCenter, new Color(1f, 0.35f, 0.35f));

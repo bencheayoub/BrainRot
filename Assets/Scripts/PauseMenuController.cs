@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
@@ -20,7 +21,18 @@ public class PauseMenuController : MonoBehaviour
     public static bool IsOverPauseButton(Vector2 screenPosition)
     {
         if (pauseButtonRect == null || !pauseButtonRect.gameObject.activeInHierarchy) return false;
-        return RectTransformUtility.RectangleContainsScreenPoint(pauseButtonRect, screenPosition, null);
+
+        // If the canvas is "Screen Space - Camera" (AspectLock does that), the camera must be given,
+        // otherwise the press is never detected on the button and the player moves.
+        Canvas canvas = pauseButtonRect.GetComponentInParent<Canvas>();
+        Camera cam = null;
+        if (canvas != null)
+        {
+            canvas = canvas.rootCanvas;
+            if (canvas.renderMode != RenderMode.ScreenSpaceOverlay) cam = canvas.worldCamera;
+        }
+
+        return RectTransformUtility.RectangleContainsScreenPoint(pauseButtonRect, screenPosition, cam);
     }
 
     [Header("Scenes")]
@@ -58,9 +70,21 @@ public class PauseMenuController : MonoBehaviour
 
         EnsureEventSystem();
         BuildUI();
+        StartCoroutine(AlignWithHud());
 
         gm = GameManager.Instance;
         if (gm != null) gm.GameOver += OnGameOver;
+    }
+
+    // Waits one frame so the HUD exists, then puts the pause button on the same line as hearts and coin
+    private IEnumerator AlignWithHud()
+    {
+        yield return null;
+
+        if (pauseButtonRect == null || HUDController.RowCenterFromTop <= 0f) yield break;
+
+        pauseButtonRect.pivot = new Vector2(0.5f, 0.5f);
+        pauseButtonRect.anchoredPosition = new Vector2(0f, -HUDController.RowCenterFromTop);
     }
 
     private void OnDestroy()
@@ -179,8 +203,8 @@ public class PauseMenuController : MonoBehaviour
 
         RectTransform rt = btn.GetComponent<RectTransform>();
         rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 1f);
-        rt.pivot = new Vector2(0.5f, 1f);
-        rt.anchoredPosition = new Vector2(0f, -margin);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = new Vector2(0f, -(margin + pauseButtonSize * 0.5f));
         pauseButtonRect = rt;
 
         if (pauseIcon != null)

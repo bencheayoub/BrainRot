@@ -155,6 +155,8 @@ MonoBehaviour:
   settingsButton: {fileID: -7941085776763758979, guid: 76e15b34848c0fb16b3c1dec95a5886b, type: 3}
   quitButton: {fileID: 916577628950400133, guid: 0d66bc83a9311805cbc111d54510b202, type: 3}
   backButton: {fileID: 1371943157121963248, guid: a884267f0fd4e6a839d69b589167ec73, type: 3}
+  leftArrowButton: {fileID: 0}
+  rightArrowButton: {fileID: 0}
   retryButton: {fileID: 2009948407894430596, guid: 9f51b40aba415a79ba9d8fa9ca872f1b, type: 3}
   mainMenuButton: {fileID: -4015850073686809550, guid: 27e4d02de0894fa26bdbf646c1175502, type: 3}
   resumeButton: {fileID: 6364227270160765356, guid: 6b75ee94c621156fc8ebe3aafb48b288, type: 3}
@@ -696,7 +698,7 @@ MonoBehaviour:
   models:
   - label: Tung Tung Tung Sahur
     prefab: {fileID: 919132149155446097, guid: 8b375c08a3768e3e4ba86d2a647d9fc9, type: 3}
-    texture: {fileID: 2800000, guid: fa6cbbd4e3c511bcfbd86eefc73085da, type: 3}
+    texture: {fileID: 0}
     targetHeight: 1.6
     scale: 1
     rotation: {x: 0, y: 180, z: 0}
@@ -1082,7 +1084,7 @@ MonoBehaviour:
   heartFull: {fileID: -1218823883695198015, guid: 17b4d38d025194e3caea64955b98ace6, type: 3}
   heartEmpty: {fileID: -511133062249068954, guid: a5d4910018fde60919c5e8516e7a4821, type: 3}
   scoreIcon: {fileID: 0}
-  heartSize: 90
+  heartSize: 140
   heartSpacing: 10
   margin: 40
   scoreIconSize: 80
