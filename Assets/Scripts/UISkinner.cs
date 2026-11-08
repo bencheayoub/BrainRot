@@ -30,6 +30,9 @@ public class UISkinner : MonoBehaviour
     [Header("Other buttons (any screen, either scene)")]
     [Tooltip("Buttons labelled BACK")]
     [SerializeField] private Sprite backButton;
+    [Tooltip("The < and > arrows on the hero select screen")]
+    [SerializeField] private Sprite leftArrowButton;
+    [SerializeField] private Sprite rightArrowButton;
     [Tooltip("Buttons labelled RETRY or RESTART")]
     [SerializeField] private Sprite retryButton;
     [Tooltip("Buttons labelled MAIN MENU")]
@@ -191,6 +194,8 @@ public class UISkinner : MonoBehaviour
             case "SETTINGS": return settingsButton;
             case "QUIT": return quitButton;
             case "BACK": return backButton;
+            case "<": return leftArrowButton;
+            case ">": return rightArrowButton;
             case "RETRY":
             case "RESTART":
             case "TRY AGAIN":

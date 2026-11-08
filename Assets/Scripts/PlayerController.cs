@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
+[DefaultExecutionOrder(100)] // runs after the EventSystem, so it already knows what the pointer is over
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
@@ -10,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float edgePadding = 0.5f;
 
     private Camera cam;
+    private bool pressStartedOnUI; // a press that began on a button never moves the player
 
     private void Start()
     {
@@ -69,29 +72,51 @@ public class PlayerController : MonoBehaviour
         // Mouse or touch: hold the left or right half of the screen
         // (a press on the pause button does not count)
         Pointer ptr = Pointer.current;
-        if (x == 0f && ptr != null && ptr.press.isPressed)
+        if (ptr != null)
+        {
+            if (ptr.press.wasPressedThisFrame) pressStartedOnUI = IsOverUI(ptr.position.ReadValue());
+            if (!ptr.press.isPressed) pressStartedOnUI = false;
+        }
+
+        if (x == 0f && ptr != null && ptr.press.isPressed && !pressStartedOnUI)
         {
             Vector2 screenPos = ptr.position.ReadValue();
-            if (!PauseMenuController.IsOverPauseButton(screenPos))
-            {
-                x = screenPos.x < Screen.width * 0.5f ? -1f : 1f;
-            }
+            x = PointerDirection(screenPos);
         }
 
         return x;
 #else
         float x = Input.GetAxisRaw("Horizontal");
 
-        if (x == 0f && Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0)) pressStartedOnUI = IsOverUI(Input.mousePosition);
+        if (!Input.GetMouseButton(0)) pressStartedOnUI = false;
+
+        if (x == 0f && Input.GetMouseButton(0) && !pressStartedOnUI)
         {
-            Vector2 screenPos = Input.mousePosition;
-            if (!PauseMenuController.IsOverPauseButton(screenPos))
-            {
-                x = screenPos.x < Screen.width * 0.5f ? -1f : 1f;
-            }
+            x = PointerDirection(Input.mousePosition);
         }
 
         return x;
 #endif
+    }
+
+    // True when the pointer is on the pause button or on any other clickable UI
+    private static bool IsOverUI(Vector2 screenPos)
+    {
+        if (PauseMenuController.IsOverPauseButton(screenPos)) return true;
+        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+    }
+
+    // -1 / +1 for a press on the left / right half of the GAME area, 0 if it should be ignored
+    // (on the pause button, or on the black bars)
+    private float PointerDirection(Vector2 screenPos)
+    {
+        if (PauseMenuController.IsPaused) return 0f;
+        if (PauseMenuController.IsOverPauseButton(screenPos)) return 0f;
+
+        Rect area = cam != null ? cam.pixelRect : new Rect(0f, 0f, Screen.width, Screen.height);
+        if (!area.Contains(screenPos)) return 0f;
+
+        return screenPos.x < area.center.x ? -1f : 1f;
     }
 }
