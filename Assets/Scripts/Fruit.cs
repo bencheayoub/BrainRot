@@ -43,6 +43,13 @@ public class Fruit : MonoBehaviour
 
     private void Start()
     {
+        // Give this object its 3D model (apple, banana, bomb...) from the
+        // FruitModelLibrary in the scene. If there is no library, the old look stays.
+        if (FruitModelLibrary.Instance != null)
+        {
+            FruitModelLibrary.Instance.ApplySkin(this);
+        }
+
         cam = Camera.main;
 
         // Each object spins around its own random axis, at a slightly random speed
