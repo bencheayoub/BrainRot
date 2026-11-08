@@ -708,7 +708,7 @@ MonoBehaviour:
     texture: {fileID: 0}
     targetHeight: 1.2
     scale: 1.3
-    rotation: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 180, z: 0}
     positionOffset: {x: 0, y: 0, z: 0}
     placeholderShape: 0
     placeholderColor: {r: 0.85, g: 0.7, b: 0.4, a: 1}
@@ -717,7 +717,7 @@ MonoBehaviour:
     texture: {fileID: 0}
     targetHeight: 1.2
     scale: 1.3
-    rotation: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 180, z: 0}
     positionOffset: {x: 0, y: 0, z: 0}
     placeholderShape: 0
     placeholderColor: {r: 0.85, g: 0.7, b: 0.4, a: 1}
@@ -726,7 +726,7 @@ MonoBehaviour:
     texture: {fileID: 0}
     targetHeight: 1.2
     scale: 1.3
-    rotation: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 180, z: 0}
     positionOffset: {x: 0, y: 0, z: 0}
     placeholderShape: 0
     placeholderColor: {r: 0.85, g: 0.7, b: 0.4, a: 1}
@@ -849,6 +849,95 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1089262731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1089262733}
+  - component: {fileID: 1089262732}
+  m_Layer: 0
+  m_Name: FruitModelLibrary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1089262732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089262731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77925be79beb84a2d860c6c1e92ace9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FruitModelLibrary
+  goodFruits:
+  - {fileID: 3572913808378504998, guid: f55b245050de49c678221deaded0de9e, type: 3}
+  - {fileID: 9048077085175019975, guid: 150b21eab1ff93987bf1c9ca04bf70e5, type: 3}
+  - {fileID: 7927656202600546282, guid: df08f87269e50c1488e56e31f9d81c99, type: 3}
+  - {fileID: 8737359566542799439, guid: 1f6e1dc7d8c7215d0bee32a3170f3ea3, type: 3}
+  - {fileID: 958979087034358992, guid: 4a8f1177a753b7c6798377aac8f20895, type: 3}
+  - {fileID: 5739629295288075508, guid: 901f3ed29bdfa079684fc274250609be, type: 3}
+  - {fileID: 6153862245742311657, guid: 324bc4e710df16bb4afef719dc57efd8, type: 3}
+  - {fileID: 1243677650960079556, guid: 21560f2009dd3928891edbcde0e1b39a, type: 3}
+  - {fileID: 6104108004528309001, guid: 8589d6c5a54d42605ab867d81bd321b5, type: 3}
+  - {fileID: 3495173134128287527, guid: 7c18a4ff85e490bf3b196023bb686ce2, type: 3}
+  - {fileID: 8641408135187090611, guid: 61b9f022ae59b7aed8bf291082e506e7, type: 3}
+  - {fileID: 8968224834342277856, guid: 2ed3bfea8d5fa8fda98787252cb5492c, type: 3}
+  - {fileID: 3973868199659018298, guid: e96beff5d75f1d6199086fa44745116f, type: 3}
+  - {fileID: 4885768415214596026, guid: 4bc3d4648c65f18eaa890f7b4b2c5e4a, type: 3}
+  - {fileID: 7039192096914152972, guid: 40ab5aca34aeb399cb7102f74114bdf8, type: 3}
+  - {fileID: 6552527409088769975, guid: a4d3c1a187de05c569f038736407f8cd, type: 3}
+  - {fileID: 8126047720732814711, guid: acd0cb1e0378996088a499462151b393, type: 3}
+  - {fileID: 5352194954227596113, guid: 7320467eb0e4a9032bb5df034b530690, type: 3}
+  - {fileID: 8516421847318212, guid: 3500a5b267d1ce5e7bc07f71615da95e, type: 3}
+  - {fileID: 8192228476420863255, guid: 52cbce44ad922ad27bad6e699a9a84d4, type: 3}
+  - {fileID: 8785641060853552501, guid: 3daefd074d8b83389acf64fad8745e7a, type: 3}
+  - {fileID: 5386645696281429553, guid: 111bd0be1c45526bd9b111ec85e22caf, type: 3}
+  - {fileID: 8071345939693795171, guid: 20b6acc237d8b0409b27e816ac9ae4fe, type: 3}
+  - {fileID: 2465014049644118180, guid: 4f776ac4818ebd2b0bf0dedd6daaf676, type: 3}
+  - {fileID: 1206532157335834759, guid: 163cf5a4d736f041e834bbcabe100d3d, type: 3}
+  - {fileID: 5254142997287254632, guid: b707313c1c5d20909b70f3fb4eb13be7, type: 3}
+  - {fileID: 1682576522430405197, guid: f4a5e236b68556bebb206442fe295088, type: 3}
+  - {fileID: 5475686465015015719, guid: 24f3715603b8917619bced502c975546, type: 3}
+  badFruits: []
+  goldenFruits: []
+  obstacles:
+  - {fileID: 6035112831783726136, guid: ffeb9ac023febcee292113ce49976690, type: 3}
+  - {fileID: 8654405520246797660, guid: c55eee1660055f5b6bf1c91b585c6d11, type: 3}
+  pickMode: 1
+  goodSize: 1
+  badSize: 1
+  goldenSize: 1
+  obstacleSize: 1
+  tintBadFruits: 1
+  badTint: {r: 0.35, g: 0.45, b: 0.1, a: 1}
+  badTintStrength: 0.6
+  tintGoldenFruits: 1
+  goldenTint: {r: 1, g: 0.82, b: 0.1, a: 1}
+  goldenTintStrength: 0.75
+--- !u!4 &1089262733
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089262731}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.03637, y: 3.78305, z: -0.28636}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1119,7 +1208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScrollingBackground
   scrollSpeed: 0.3
-  customTexture: {fileID: 0}
+  customTexture: {fileID: 2800000, guid: 71ae9ddc08aeb148983bede3913f4011, type: 3}
 --- !u!23 &1690850402
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1258,3 +1347,4 @@ SceneRoots:
   - {fileID: 519957302}
   - {fileID: 1658013954}
   - {fileID: 64755371}
+  - {fileID: 1089262733}
