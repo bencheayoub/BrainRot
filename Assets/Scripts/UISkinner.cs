@@ -25,6 +25,23 @@ public class UISkinner : MonoBehaviour
     [SerializeField] private Sprite settingsButton;
     [SerializeField] private Sprite quitButton;
 
+    [Header("Other buttons (any screen, either scene)")]
+    [Tooltip("Buttons labelled BACK")]
+    [SerializeField] private Sprite backButton;
+    [Tooltip("Buttons labelled RETRY or RESTART")]
+    [SerializeField] private Sprite retryButton;
+    [Tooltip("Buttons labelled MAIN MENU")]
+    [SerializeField] private Sprite mainMenuButton;
+    [Tooltip("Buttons labelled RESUME")]
+    [SerializeField] private Sprite resumeButton;
+    [Tooltip("The MUSIC button when music is ON / OFF (changes automatically when clicked)")]
+    [SerializeField] private Sprite musicOnButton;
+    [SerializeField] private Sprite musicOffButton;
+    [Tooltip("The SOUND button when sound is ON / OFF")]
+    [SerializeField] private Sprite soundOnButton;
+    [SerializeField] private Sprite soundOffButton;
+
+    [Header("Main menu buttons position")]
     [Tooltip("Moves the four menu buttons up (+) or down (-), in canvas units. Use a negative number if they overlap the logo.")]
     [SerializeField] private float menuButtonsOffsetY = 0f;
 
@@ -36,11 +53,15 @@ public class UISkinner : MonoBehaviour
 
     [Header("Game scene")]
     [SerializeField] private Sprite gameOverBackground;
+    [Tooltip("Optional: background for the pause screen (found by its PAUSED title)")]
+    [SerializeField] private Sprite pauseBackground;
 
     private readonly HashSet<Button> done = new HashSet<Button>();
     private readonly HashSet<Graphic> subTitlesDone = new HashSet<Graphic>();
     private readonly HashSet<Transform> subPanelsDone = new HashSet<Transform>();
     private readonly List<Graphic> subTitles = new List<Graphic>();
+    private readonly HashSet<Button> toggles = new HashSet<Button>();
+    private readonly HashSet<Graphic> pauseTitlesDone = new HashSet<Graphic>();
 
     private Button playButtonRef;
     private bool menuBackgroundApplied;
@@ -86,6 +107,7 @@ public class UISkinner : MonoBehaviour
         foreach (Button b in buttons)
         {
             if (done.Add(b)) SkinButton(b);
+            else if (toggles.Contains(b)) RefreshToggle(b);
         }
 
         foreach (Graphic g in texts) ProcessText(g, ReadText(g));
@@ -110,22 +132,13 @@ public class UISkinner : MonoBehaviour
     private void SkinButton(Button b)
     {
         string s = Normalize(LabelOf(b, out Graphic labelGraphic));
-        Sprite sprite = null;
-
-        switch (s)
-        {
-            case "PLAY": sprite = playButton; break;
-            case "CHARACTERS":
-            case "CHARACTER":
-            case "HEROES": sprite = charactersButton; break;
-            case "SETTINGS": sprite = settingsButton; break;
-            case "QUIT": sprite = quitButton; break;
-        }
+        Sprite sprite = SpriteForLabel(s, out bool isToggle);
 
         if (sprite == null) return;
+        if (isToggle) toggles.Add(b);
 
-        // Shift the menu buttons (each button is only processed once)
-        if (menuButtonsOffsetY != 0f)
+        // Shift only the four main menu buttons (each button is only processed once)
+        if (menuButtonsOffsetY != 0f && IsMainMenuLabel(s))
         {
             RectTransform brt = b.GetComponent<RectTransform>();
             if (brt != null) brt.anchoredPosition += new Vector2(0f, menuButtonsOffsetY);
@@ -142,6 +155,65 @@ public class UISkinner : MonoBehaviour
 
         // The art already contains the word, so hide the text label
         if (labelGraphic != null) labelGraphic.enabled = false;
+    }
+
+    // MUSIC / SOUND buttons change their text (ON / OFF) when clicked, so their picture is updated every scan
+    private void RefreshToggle(Button b)
+    {
+        string s = Normalize(LabelOf(b, out _));
+        Sprite sprite = SpriteForLabel(s, out _);
+        if (sprite == null) return;
+
+        Image img = b.targetGraphic as Image;
+        if (img == null) img = b.GetComponent<Image>();
+        if (img == null) return;
+
+        img.sprite = sprite;
+        img.color = Color.white; // the menu script may tint the button green / red
+    }
+
+    private Sprite SpriteForLabel(string s, out bool isToggle)
+    {
+        isToggle = false;
+
+        switch (s)
+        {
+            case "PLAY": return playButton;
+            case "CHARACTERS":
+            case "CHARACTER":
+            case "HEROES": return charactersButton;
+            case "SETTINGS": return settingsButton;
+            case "QUIT": return quitButton;
+            case "BACK": return backButton;
+            case "RETRY":
+            case "RESTART":
+            case "TRY AGAIN":
+            case "PLAY AGAIN": return retryButton;
+            case "MAIN MENU":
+            case "MENU": return mainMenuButton;
+            case "RESUME":
+            case "CONTINUE": return resumeButton;
+        }
+
+        if (s.StartsWith("MUSIC"))
+        {
+            isToggle = true;
+            return s.EndsWith("OFF") ? musicOffButton : musicOnButton;
+        }
+
+        if (s.StartsWith("SOUND") || s.StartsWith("SFX"))
+        {
+            isToggle = true;
+            return s.EndsWith("OFF") ? soundOffButton : soundOnButton;
+        }
+
+        return null;
+    }
+
+    private static bool IsMainMenuLabel(string s)
+    {
+        return s == "PLAY" || s == "CHARACTERS" || s == "CHARACTER" || s == "HEROES" ||
+               s == "SETTINGS" || s == "QUIT";
     }
 
     private static string LabelOf(Button b, out Graphic labelGraphic)
@@ -188,6 +260,12 @@ public class UISkinner : MonoBehaviour
         if (s == "FINAL SCORE" && gameOverBackground != null && !gameOverBackgroundApplied)
         {
             ApplyGameOverBackground(g);
+        }
+
+        if (pauseBackground != null && (s == "PAUSED" || s == "PAUSE" || s == "GAME PAUSED") &&
+            g.GetComponentInParent<Button>(true) == null && pauseTitlesDone.Add(g))
+        {
+            ApplyPauseBackground(g);
         }
     }
 
@@ -302,6 +380,21 @@ public class UISkinner : MonoBehaviour
 
         gameOverBackgroundApplied = true;
         Debug.Log("UISkinner: game over background applied");
+    }
+
+    private void ApplyPauseBackground(Graphic pauseTitle)
+    {
+        Canvas canvas = pauseTitle.GetComponentInParent<Canvas>(true);
+        if (canvas == null) return;
+        canvas = canvas.rootCanvas;
+
+        Transform top = TopLevelChild(pauseTitle.transform, canvas.transform);
+        if (top == null || top == pauseTitle.transform) return;
+
+        Transform bg = CreateBackground(top, pauseBackground, "ArtPauseBackground");
+        HideFlatBackdrops(top, bg, canvas);
+
+        Debug.Log("UISkinner: pause background applied");
     }
 
     // Full-screen image that fills the screen without stretching (crops a little if the shape differs)

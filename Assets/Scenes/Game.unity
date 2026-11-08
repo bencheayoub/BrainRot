@@ -148,12 +148,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68a2e6320242e78980e09d733f870b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UISkinner
-  menuBackground: {fileID: -844773298834026925, guid: 89436d51bc38ce9ffbee58e686533d19, type: 3}
+  menuBackground: {fileID: -6085507850292256117, guid: 71ae9ddc08aeb148983bede3913f4011, type: 3}
+  subScreenBackground: {fileID: -6085507850292256117, guid: 71ae9ddc08aeb148983bede3913f4011, type: 3}
   playButton: {fileID: -3227648988771511903, guid: 8f2da6f6308426a7ea8e8dacb198f010, type: 3}
   charactersButton: {fileID: -5884511039363698573, guid: 578f472cc9a694e54858024ba8438ba0, type: 3}
   settingsButton: {fileID: -7941085776763758979, guid: 76e15b34848c0fb16b3c1dec95a5886b, type: 3}
   quitButton: {fileID: 916577628950400133, guid: 0d66bc83a9311805cbc111d54510b202, type: 3}
+  backButton: {fileID: 1371943157121963248, guid: a884267f0fd4e6a839d69b589167ec73, type: 3}
+  retryButton: {fileID: 2009948407894430596, guid: 9f51b40aba415a79ba9d8fa9ca872f1b, type: 3}
+  mainMenuButton: {fileID: -4015850073686809550, guid: 27e4d02de0894fa26bdbf646c1175502, type: 3}
+  resumeButton: {fileID: 6364227270160765356, guid: 6b75ee94c621156fc8ebe3aafb48b288, type: 3}
+  musicOnButton: {fileID: -9111716774303460876, guid: 8e5f8d287947d7cdbb75de76b0bc975e, type: 3}
+  musicOffButton: {fileID: -4671508421012547215, guid: ab5d3989e4a192610b396bf0bced0e48, type: 3}
+  soundOnButton: {fileID: -6032194418689728446, guid: a6d9727601c034b0cbf48919d0666337, type: 3}
+  soundOffButton: {fileID: 8383246991108578977, guid: b6ab87efb0dc06a678b3b93457fd7bc5, type: 3}
+  menuButtonsOffsetY: 0
+  hideHeroLabel: 1
+  subScreenTitles:
+  - SETTINGS
+  - CHOOSE YOUR HERO
   gameOverBackground: {fileID: 0}
+  pauseBackground: {fileID: 0}
 --- !u!4 &64755371
 Transform:
   m_ObjectHideFlags: 0

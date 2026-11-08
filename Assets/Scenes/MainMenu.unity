@@ -164,12 +164,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UISkinner
   menuBackground: {fileID: -844773298834026925, guid: 89436d51bc38ce9ffbee58e686533d19, type: 3}
+  subScreenBackground: {fileID: -6085507850292256117, guid: 71ae9ddc08aeb148983bede3913f4011, type: 3}
   playButton: {fileID: -3227648988771511903, guid: 8f2da6f6308426a7ea8e8dacb198f010, type: 3}
   charactersButton: {fileID: -5884511039363698573, guid: 578f472cc9a694e54858024ba8438ba0, type: 3}
   settingsButton: {fileID: -7941085776763758979, guid: 76e15b34848c0fb16b3c1dec95a5886b, type: 3}
   quitButton: {fileID: 916577628950400133, guid: 0d66bc83a9311805cbc111d54510b202, type: 3}
   menuButtonsOffsetY: -200
   hideHeroLabel: 1
+  subScreenTitles:
+  - SETTINGS
+  - CHOOSE YOUR HERO
   gameOverBackground: {fileID: 0}
 --- !u!1 &203844586
 GameObject:
@@ -329,7 +333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   gameSceneName: Game
   gameTitle: FALL
-  background: {fileID: 0}
+  background: {fileID: -844773298834026925, guid: 89436d51bc38ce9ffbee58e686533d19, type: 3}
   logo: {fileID: 0}
   buttonSprite: {fileID: 0}
   characterPreviews: []
