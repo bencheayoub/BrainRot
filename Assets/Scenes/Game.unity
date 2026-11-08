@@ -167,8 +167,8 @@ MonoBehaviour:
   subScreenTitles:
   - SETTINGS
   - CHOOSE YOUR HERO
-  gameOverBackground: {fileID: 0}
-  pauseBackground: {fileID: 0}
+  gameOverBackground: {fileID: 685095822067552310, guid: 9cc252d5dad1a00c9acb08082746e247, type: 3}
+  pauseBackground: {fileID: -6085507850292256117, guid: 71ae9ddc08aeb148983bede3913f4011, type: 3}
 --- !u!4 &64755371
 Transform:
   m_ObjectHideFlags: 0
@@ -680,6 +680,7 @@ MonoBehaviour:
   catchPop: 0.2
   goldenSpinDuration: 0.6
   funnyIdle: 1
+  pirouetteSpeed: 150
 --- !u!114 &547526599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -702,8 +703,26 @@ MonoBehaviour:
     positionOffset: {x: 0, y: 0, z: 0}
     placeholderShape: 1
     placeholderColor: {r: 0.55, g: 0.35, b: 0.15, a: 1}
-  - label: Potato with Glasses
-    prefab: {fileID: 0}
+  - label: Patate Lunette
+    prefab: {fileID: 919132149155446097, guid: 5640b3bc20b983a77ab2a808762bfa7f, type: 3}
+    texture: {fileID: 0}
+    targetHeight: 1.2
+    scale: 1.3
+    rotation: {x: 0, y: 0, z: 0}
+    positionOffset: {x: 0, y: 0, z: 0}
+    placeholderShape: 0
+    placeholderColor: {r: 0.85, g: 0.7, b: 0.4, a: 1}
+  - label: Patate a Moustache
+    prefab: {fileID: 919132149155446097, guid: cf29a6c9434931d259f54b85a8b8e030, type: 3}
+    texture: {fileID: 0}
+    targetHeight: 1.2
+    scale: 1.3
+    rotation: {x: 0, y: 0, z: 0}
+    positionOffset: {x: 0, y: 0, z: 0}
+    placeholderShape: 0
+    placeholderColor: {r: 0.85, g: 0.7, b: 0.4, a: 1}
+  - label: ballerina
+    prefab: {fileID: 919132149155446097, guid: b6cb8e01957ae4975a43f8e5f1150118, type: 3}
     texture: {fileID: 0}
     targetHeight: 1.2
     scale: 1.3

@@ -29,8 +29,10 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private float goldenSpinDuration = 0.6f;
 
     [Header("Funny idle (optional)")]
-    [Tooltip("Tung Tung Tung Sahur trembles like a drum, the Potato wobbles side to side")]
+    [Tooltip("Tung Tung Tung Sahur trembles like a drum, the potatoes wobble side to side, the ballerina does a pirouette")]
     [SerializeField] private bool funnyIdle = true;
+    [Tooltip("Ballerina spin speed in degrees per second")]
+    [SerializeField] private float pirouetteSpeed = 150f;
 
     private Transform model;
     private Vector3 baseScale;
@@ -99,11 +101,21 @@ public class PlayerAnimator : MonoBehaviour
         float extraRoll = Mathf.Sin(Time.time * wobbleSpeed * 0.7f + 1f) * wobbleAngle * 0.5f;
         float yaw = 0f;
 
-        // Funny idle
+        // Funny idle, different for each character
         if (funnyIdle)
         {
-            if (CharacterSelection.Index == 0) extraRoll += Mathf.Sin(Time.time * 28f) * 3f; // drum shake
-            else yaw += Mathf.Sin(Time.time * 3f) * 25f;                                     // potato wobble
+            switch (CharacterSelection.Index)
+            {
+                case 0: // Tung Tung Tung Sahur: drum shake
+                    extraRoll += Mathf.Sin(Time.time * 28f) * 3f;
+                    break;
+                case 3: // Ballerina Cappuccina: pirouette
+                    yaw += (Time.time * pirouetteSpeed) % 360f;
+                    break;
+                default: // Potatoes: wobble side to side
+                    yaw += Mathf.Sin(Time.time * 3f) * 25f;
+                    break;
+            }
         }
 
         // Golden fruit: one full spin
