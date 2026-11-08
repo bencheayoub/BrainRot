@@ -912,8 +912,62 @@ MonoBehaviour:
   - {fileID: 5254142997287254632, guid: b707313c1c5d20909b70f3fb4eb13be7, type: 3}
   - {fileID: 1682576522430405197, guid: f4a5e236b68556bebb206442fe295088, type: 3}
   - {fileID: 5475686465015015719, guid: 24f3715603b8917619bced502c975546, type: 3}
-  badFruits: []
-  goldenFruits: []
+  badFruits:
+  - {fileID: 6406503733675209897, guid: 26aa96fc6918ad87caa3f3b679030c37, type: 3}
+  - {fileID: 1263628460277620818, guid: 1ae4f5f862bf0ac19aa93562c41f8dda, type: 3}
+  - {fileID: 1685463914574749103, guid: 7335e6223662e789c8c80564d9e5f560, type: 3}
+  - {fileID: 2141813770260616171, guid: b7a7967f240892d29be91170c960994d, type: 3}
+  - {fileID: 2041744672176182652, guid: be18bc35243829f0bb62e684ac10ea1f, type: 3}
+  - {fileID: 2569538383110212695, guid: 8aecce0d8d45d266082b6cd708e9dff0, type: 3}
+  - {fileID: 4358275190960248638, guid: 22e1cdf5574e8549d89c5a3e6d5bfb00, type: 3}
+  - {fileID: 3375118132548095526, guid: 3bd7ef9f6379a2ceeba312b114c4335f, type: 3}
+  - {fileID: 8004333355634245541, guid: e0b3674234cb864d59ac52ad6aa0e9d3, type: 3}
+  - {fileID: 205475745033500229, guid: 24f463a1fac02afa488c8829109c7462, type: 3}
+  - {fileID: 3053447551107887922, guid: 8c285d4e45deee9baa9b1cb2860892cb, type: 3}
+  - {fileID: 5354792980275100183, guid: c999dba2d1e9d2c1c8165d14c7a2e09b, type: 3}
+  - {fileID: 762325327818243098, guid: cb6d99713979801af9ed2a8243e2ae1a, type: 3}
+  - {fileID: 7610540697221450012, guid: a761d9bf1b4b91d09aa12f4830bd5ae6, type: 3}
+  - {fileID: 6428467923803567105, guid: c5180b93d08300fbebc176e8ba4085bf, type: 3}
+  - {fileID: 7219675424915090321, guid: 060af2fab3bac03699c94e852b11dbf4, type: 3}
+  - {fileID: 6309518797886240491, guid: dccb27b7140bbe231b5a71326a50238a, type: 3}
+  - {fileID: 5806148623631829927, guid: 8ed61c775eccc24c88628e2fd24d4acc, type: 3}
+  - {fileID: 6121522343704145799, guid: 96296638e0720a6ec8c565d914ce39f3, type: 3}
+  - {fileID: 1944520438329614120, guid: cf9aebf04d8cef0eb93a78c51bf359c7, type: 3}
+  - {fileID: 3440499767649796169, guid: e3f907b2588cc931da7722b0a2f1a0ce, type: 3}
+  - {fileID: 436071071287611491, guid: b5b86cdf2bd4024d79e78e8466ebb226, type: 3}
+  - {fileID: 1998987517852868807, guid: 4d97270fbdd030e2ba35bd4075f9b051, type: 3}
+  - {fileID: 480389801283116221, guid: a065d47d84ae0d4ed96ce47da5228487, type: 3}
+  - {fileID: 1465787684221487901, guid: fe4bd3069ced7c0c89d4b045860ab1ba, type: 3}
+  - {fileID: 1641400392960134598, guid: bd10d48cd7d62e4a88ab186672e17dd2, type: 3}
+  - {fileID: 6307476006836250261, guid: 50e1eba7fc80a4268bfb7c48e3d2edd1, type: 3}
+  - {fileID: 2825782486290364368, guid: 2ac41daf371bc5f2fab48afe2e91ea02, type: 3}
+  goldenFruits:
+  - {fileID: 1967616323671633235, guid: 70a3bb2324fc507a28181df361c22449, type: 3}
+  - {fileID: 3451738508129467110, guid: f9ab88f5db8832a92a4e4f8f06d82794, type: 3}
+  - {fileID: 2959371623664446268, guid: 41fe17a7654316e8a84d8d5e7819b706, type: 3}
+  - {fileID: 3852428303027391727, guid: 3fc99043cde90909685752c602cc1b7a, type: 3}
+  - {fileID: 7971908969088426990, guid: 633bad3d1a4821460b9c01027e66c891, type: 3}
+  - {fileID: 131265273915549343, guid: 495dfc6e32bffc5268a59d7229d0ff00, type: 3}
+  - {fileID: 5589493342319283466, guid: c25dd758465fec084af7adce7c0c08b0, type: 3}
+  - {fileID: 1132232749378454726, guid: 2700cf1116d7ad49fb8caf6a2276737b, type: 3}
+  - {fileID: 4230887970785237184, guid: fc17f94dcd43a9394a5456b0ae75eaa5, type: 3}
+  - {fileID: 5293479540762847605, guid: 197d915007feb64e59333cd4b1b7bd1f, type: 3}
+  - {fileID: 7168879491467128385, guid: 9c3894aa47188cdd3a2044689c610ec8, type: 3}
+  - {fileID: 5599789236912452086, guid: b096cd8deaf45e0939dad9ecf7c09156, type: 3}
+  - {fileID: 7436636210924116556, guid: 319e7cbf10f37e00ab21a1e2ce601fe5, type: 3}
+  - {fileID: 3897736170864045094, guid: 0f4324315f4b5be52bae3b15f0f05b81, type: 3}
+  - {fileID: 4719897173194598442, guid: d735b716ba668383aac1bc3df66727c8, type: 3}
+  - {fileID: 1419360684973982467, guid: 137d8700542d0dfb0886d4bfa0b5e4db, type: 3}
+  - {fileID: 477581022615784283, guid: 31f06c5c1d61a35d0aad847482d3ee83, type: 3}
+  - {fileID: 7021399889514416597, guid: 1be17970b351fbd9db62550ac032cdc6, type: 3}
+  - {fileID: 8383171338703145587, guid: ba0787dbca989b6cc87a6d2e9d00b0ce, type: 3}
+  - {fileID: 3556945126800116296, guid: 28da5e84e0505b515882ee16a893bba6, type: 3}
+  - {fileID: 5072619623355208826, guid: e1b17c6daa864d759b886176c2c2b5ee, type: 3}
+  - {fileID: 6458944912071803176, guid: 0f7dc06913d5319d798034504ea2dccf, type: 3}
+  - {fileID: 6724144377750736879, guid: 10f43c61b119e874498b24e3c47b2c16, type: 3}
+  - {fileID: 2901552136503912827, guid: 8c1cc37e1ab4cf37bb339e618d1e27e1, type: 3}
+  - {fileID: 2925787171954302055, guid: 84c4770e1d02c8445a2d97f343d00593, type: 3}
+  - {fileID: 2916163633346372517, guid: b07a73e79094cf14680170c52d6faaa7, type: 3}
   obstacles:
   - {fileID: 6035112831783726136, guid: ffeb9ac023febcee292113ce49976690, type: 3}
   - {fileID: 8654405520246797660, guid: c55eee1660055f5b6bf1c91b585c6d11, type: 3}
@@ -1168,14 +1222,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   music: {fileID: 0}
   musicVolume: 0.5
-  buttonClick: {fileID: 0}
-  goodCatch: {fileID: 0}
-  badCatch: {fileID: 0}
-  goldenCatch: {fileID: 0}
-  obstacleHit: {fileID: 0}
-  gameOver: {fileID: 0}
+  buttonClicks: []
+  hoverSounds: []
+  startSounds: []
+  exitSounds: []
+  pauseSounds: []
+  goodCatchSounds: []
+  badCatchSounds: []
+  goldenCatchSounds: []
+  obstacleHitSounds: []
+  gameOverSounds: []
   sfxVolume: 1
+  hoverVolume: 0.5
   autoClickAllButtons: 0
+  hoverOnAllButtons: 1
+  startWords:
+  - play
+  - start
+  exitWords:
+  - quit
+  - exit
+  pauseWords:
+  - pause
 --- !u!1 &1690850400
 GameObject:
   m_ObjectHideFlags: 0
